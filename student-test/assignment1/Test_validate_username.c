@@ -18,5 +18,25 @@ void test_validate_my_username()
      * TODO: Replace the line below with your code here as described above to verify your /conf/username.txt 
      * config file and my_username() functions are setup properly
      */
-    TEST_ASSERT_TRUE_MESSAGE(false,"AESD students, please fix me!");
+    // 1) autotest-validate.c の my_username() からハードコードしたユーザー名を取得 
+    const char *hardcoded_username = my_username();
+
+    // 2) conf/username.txt から読み込んだユーザー名を取得（mallocされた文字列）
+    char *conf_username = malloc_username_from_conf_file();
+
+    // 読み込みに失敗していないかチェック
+    TEST_ASSERT_NOT_NULL_MESSAGE(conf_username,
+                                "Failed to read username from conf/username.txt");
+
+    TEST_ASSERT_EQUAL_STRING_MESSAGE(
+        hardcoded_username, 
+        conf_username,
+        "Username from my_username() does not match conf/username.txt"
+    );
+
+    // 4) 動的確保された文字列を解放
+    free(conf_username);
 }
+
+
+
